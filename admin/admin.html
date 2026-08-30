@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#11155d">
+  <title>BijakWang Impian — Admin</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <div id="loginView" class="view">
+    <div class="login-card">
+      <div class="brand"><span class="logo">B</span><div><h1>BijakWang <b>Impian</b></h1><small>Admin Panel</small></div></div>
+      <h2>Log Masuk Admin</h2>
+      <p class="muted">Gunakan akaun Supabase Auth yang telah didaftarkan sebagai admin.</p>
+      <label>Email</label>
+      <input id="email" type="email" autocomplete="username" placeholder="admin@email.com">
+      <label>Password</label>
+      <input id="password" type="password" autocomplete="current-password" placeholder="••••••••">
+      <button id="loginBtn" class="primary">LOG MASUK</button>
+      <div id="loginStatus" class="status"></div>
+    </div>
+  </div>
+
+  <div id="appView" class="view hidden">
+    <header class="topbar">
+      <div class="brand"><span class="logo">B</span><div><h1>BijakWang <b>Impian</b></h1><small>Pengurusan Soalan</small></div></div>
+      <div class="top-actions"><span id="adminEmail"></span><button id="logoutBtn" class="ghost">LOG KELUAR</button></div>
+    </header>
+
+    <main class="container">
+      <section class="toolbar">
+        <div>
+          <h2>📚 Soalan</h2>
+          <p class="muted">Tambah, edit, aktifkan atau padam perkataan dan pembayang.</p>
+        </div>
+        <div class="toolbar-actions">
+          <button id="addBtn" class="primary">＋ TAMBAH SOALAN</button>
+          <button id="exportBtn" class="secondary">EXPORT CSV</button>
+          <label class="file-btn secondary">IMPORT CSV<input id="importFile" type="file" accept=".csv,text/csv"></label>
+        </div>
+      </section>
+
+      <section class="filters">
+        <input id="search" placeholder="🔎 Cari perkataan / pembayang...">
+        <select id="categoryFilter"><option value="">Semua kategori</option></select>
+        <select id="statusFilter"><option value="">Semua status</option><option value="active">Aktif</option><option value="inactive">Tidak aktif</option></select>
+        <button id="refreshBtn" class="secondary">↻ REFRESH</button>
+      </section>
+
+      <div id="appStatus" class="status"></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Kategori</th><th>Perkataan</th><th>Pembayang</th><th>Status</th><th>Tindakan</th></tr></thead>
+          <tbody id="questionRows"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-head"><h3 id="modalTitle">Tambah Soalan</h3><button id="closeModal" class="close">×</button></div>
+      <label>Kategori</label>
+      <input id="qCategory" placeholder="Contoh: KEWANGAN">
+      <label>Perkataan / Jawapan</label>
+      <input id="qAnswer" placeholder="Contoh: MENABUNG">
+      <label>Pembayang</label>
+      <textarea id="qHint" rows="4" placeholder="Contoh: Menyimpan sebahagian wang untuk kegunaan masa hadapan."></textarea>
+      <label class="check"><input id="qActive" type="checkbox" checked> Aktif</label>
+      <div class="modal-actions"><button id="cancelBtn" class="secondary">BATAL</button><button id="saveBtn" class="primary">SIMPAN</button></div>
+      <div id="formStatus" class="status"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    window.BIJAKWANG_SUPABASE_URL = 'https://yjpgmorwarmahcxngbig.supabase.co';
+    window.BIJAKWANG_SUPABASE_KEY = 'sb_publishable_tphBWQvfNdfVzbxWLfsWwg_3H8oZPU0';
+  </script>
+  <script src="admin.js"></script>
+</body>
+</html>

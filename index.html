@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#11164f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BijakWang Impian">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>BijakWang Impian — Phase 5D</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div class="app">
+<header><div class="brand"><b>B</b><div><h1>BijakWang <em>Impian</em></h1><small>Multiplayer • 1–5 pemain</small></div></div><div class="headerActions"><button id="soundBtn" class="soundBtn" type="button" aria-label="Bunyi">🔊</button><span id="badge">LOBBI</span></div></header>
+
+<div id="connectionBanner" class="connectionBanner hidden" role="status" aria-live="polite"></div>
+<main>
+<section id="lobby" class="screen">
+<div class="hero"><strong>🎡 PERMAINAN MULTIPLAYER</strong><h2>BijakWang Impian</h2><p>Cipta bilik atau masukkan kod bilik. Setiap pemain boleh guna iPad/telefon masing-masing.</p></div>
+<div class="lobby">
+<div class="card"><h3>🎮 Cipta Bilik</h3><p>Anda menjadi host. Boleh terus main seorang atau tunggu sehingga 5 pemain.</p><label>Nama pemain</label><input id="createName" maxlength="18" placeholder="Contoh: Hazim"><button id="createBtn" class="gold">CIPTA BILIK</button></div>
+<div class="or">ATAU</div>
+<div class="card"><h3>🚪 Masuk Bilik</h3><p>Masukkan kod yang diberi oleh host.</p><label>Nama pemain</label><input id="joinName" maxlength="18" placeholder="Contoh: Aqil"><label>Kod bilik</label><input id="joinCode" class="code" maxlength="6" placeholder="ABC123" inputmode="text"><button id="joinBtn">MASUK BILIK</button></div>
+</div>
+<div id="status" class="status">● Belum disambungkan</div>
+</section>
+
+<section id="waiting" class="screen hidden">
+<div class="roombar"><div><small>KOD BILIK</small><strong id="roomCode">------</strong></div><button id="copyBtn">SALIN KOD</button></div>
+<div class="wait card"><div class="big">🎡</div><h2 id="waitTitle">Menunggu pemain...</h2><p id="waitText"></p><div id="count" class="count">1 / 5</div><div id="waitingPlayers" class="waitingPlayers"></div><button id="startBtn" class="gold">MULA PERMAINAN</button><button id="leaveBtn">KELUAR BILIK</button></div>
+</section>
+
+<section id="game" class="screen hidden">
+<div id="scoreboard" class="scoreboard"></div>
+<div class="gamePanel">
+<div class="row">
+<span id="category" class="category">KEWANGAN</span>
+<span id="turnWrap" class="turnWrap">GILIRAN: <b id="turn">-</b></span>
+</div>
+<div id="turnStatus" class="turnStatus" aria-live="polite"></div>
+<div class="hint"><strong>💡 PEMBAYANG</strong><p id="hint"></p></div>
+<div id="puzzle" class="puzzle"></div>
+<div class="solveTimer hidden" id="solveTimer"><span>⏱️ MASA MENJAWAB</span><strong id="timerValue">30</strong><small>saat</small></div>
+<div class="actions"><button id="spinBtn" class="gold">🎡 PUTAR</button><button id="vowelBtn" class="vowelBtn">🔤 PILIH VOKAL (-200)</button><button id="solveBtn">✓ SELESAIKAN</button></div>
+<div class="solveAnswer hidden" id="solveAnswer">
+<label for="answerInput">JAWAPAN ANDA</label>
+<div class="answerRow"><input id="answerInput" maxlength="60" autocomplete="off" placeholder="Taip jawapan di sini"><button id="answerBtn" class="gold">HANTAR JAWAPAN</button></div>
+</div>
+<div class="lettersTitle">PILIH HURUF</div><div id="letters" class="letters"></div>
+<div id="message" class="message" aria-live="polite">Giliran anda: boleh PUTAR atau terus SELESAIKAN.</div>
+<div id="activity" class="activity hidden" aria-live="polite"></div>
+</div>
+</section>
+</main>
+</div>
+
+<div id="wheelModal" class="overlay hidden">
+<div class="wheelCard">
+<div class="wheelHead"><div><small>GILIRAN ANDA</small><h2 id="wheelPlayer">-</h2></div><button id="closeWheel">×</button></div>
+<p>☝️ Leret/pusing dengan jari, kemudian lepaskan.</p>
+<div id="wheelArea" class="wheelArea"><i>▼</i><div class="wheelOuter"><div id="wheel" class="wheel"><div id="wheelLabels"></div></div><div class="wheelCenter">BIJAK<br><span>WANG</span></div></div></div>
+<div id="wheelResult" class="result">PUSING RODA</div><button id="cancelWheel">TUTUP</button>
+</div></div>
+
+<div id="wordTransition" class="overlay hidden">
+  <div class="wordTransitionCard">
+    <div id="wordTransitionIcon" class="wordTransitionIcon">🎉</div>
+    <div id="wordTransitionTitle">PERKATAAN SELESAI!</div>
+    <small id="wordTransitionText">Bersedia untuk perkataan seterusnya...</small>
+  </div>
+</div>
+
+<div id="resultModal" class="overlay hidden"><div class="modal card"><div class="trophy">🏆</div><h2 id="resultTitle"></h2><p id="resultText"></p><div id="finalScores"></div><button id="resultBtn" class="gold">KEMBALI KE LOBI</button></div></div>
+<script src="script.js"></script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(console.warn));
+}
+</script>
+</body></html>
