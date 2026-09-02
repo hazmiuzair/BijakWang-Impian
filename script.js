@@ -173,6 +173,7 @@ let realtimeReady=false, refreshBusy=false;
 let wheelRot=0,drag=false,pid=null,lastA=0,lastT=0,vel=0,settle=false,wheelPoints=0,turnSpun=false,vowelMode=false;
 let solveMode=false, solveDeadline=null, solveTimerId=null, lastSolveSoundSecond=-1;
 let lastTurnPlayerId=null;
+let winnerHighlightActive=false;
 
 /* Phase 6 - Turn UX (single active implementation) */
 let solveKeyboardSet=new Set();
@@ -204,9 +205,43 @@ async function chooseSolveLetter(letter){
 }
 function showSolveWinner(playerName,answer){
   let o=$("solveWinnerOverlay");
-  if(!o){o=document.createElement("div");o.id="solveWinnerOverlay";o.className="solveWinnerOverlay";document.body.appendChild(o);}
-  o.innerHTML=`<div class="solveWinnerCard"><div class="trophy">🏆</div><div>PERKATAAN DISELESAIKAN!</div><div class="winnerName">${escapeHtml(playerName)}</div><div class="winnerAnswer">${escapeHtml(answer)}</div></div>`;
-  o.classList.remove("hidden"); setTimeout(()=>o.remove(),3000);
+  if(!o){
+    o=document.createElement("div");
+    o.id="solveWinnerOverlay";
+    o.className="solveWinnerOverlay";
+    document.body.appendChild(o);
+  }
+  clearTimeout(window.__solveWinnerTimer);
+  o.innerHTML=`<div class="solveWinnerCard">
+    <div class="trophy">🏆</div>
+    <div>PERKATAAN DISELESAIKAN!</div>
+    <div class="winnerName">${escapeHtml(playerName||"Pemain")}</div>
+    <div class="winnerAnswer">JAWAPAN: ${escapeHtml(answer||"")}</div>
+  </div>`;
+  o.classList.remove("hidden");
+  winnerHighlightActive=true;
+  window.__solveWinnerTimer=setTimeout(()=>{
+    o.classList.add("hidden");
+    winnerHighlightActive=false;
+  },3000);
+}
+function broadcastWinnerHighlight(playerName,answer){
+  if(!rc || !me || !room)return;
+  try{
+    rc.send({
+      type:"broadcast",
+      event:"winner_highlight",
+      payload:{
+        player_id:me.id,
+        player_name:playerName||me.name||"Pemain",
+        answer:answer||"",
+        question_index:Number(room.question_index||0),
+        ts:Date.now()
+      }
+    });
+  }catch(e){
+    console.warn("winner highlight broadcast:",e);
+  }
 }
 /* =========================
    Phase 5E - Stability
@@ -508,6 +543,14 @@ async function subscribe(){
     .on("broadcast",{event:"turn_selection"},({payload})=>{
       if(!payload || payload.sender_id===me?.id)return;
       showTurnSelection(payload);
+    })
+    .on("broadcast",{event:"winner_highlight"},({payload})=>{
+      if(!payload || payload.player_id===me?.id)return;
+      const incomingQ=Number(payload.question_index??0);
+      const localQ=Number(room?.question_index??0);
+      if(incomingQ!==localQ)return;
+      soundWin();
+      showSolveWinner(payload.player_name||"Pemain",payload.answer||"");
     })
     .on("postgres_changes",
       {event:"UPDATE",schema:"public",table:"rooms",filter:"id=eq."+room.id},
@@ -1051,7 +1094,10 @@ async function choose(letter){
    }
 
    if(isSolved(new Set(rev))){
+     const answer=currentQ().answer.toUpperCase();
      soundWin();
+     showSolveWinner(me?.name||"Pemain",answer);
+     broadcastWinnerHighlight(me?.name||"Pemain",answer);
      $("message").textContent="🎉 Jawapan lengkap! Bonus +500.";
      return complete(rev,used);
    }
@@ -1109,6 +1155,9 @@ async function complete(rev, used) {
   const nextPlayer = players[(currentIndex + 1) % players.length];
 
   if (qi < 4) {
+    if(winnerHighlightActive){
+      await new Promise(resolve=>setTimeout(resolve,3000));
+    }
     await showWordTransition(
       "PERKATAAN SELESAI!",
       `Giliran seterusnya: ${nextPlayer?.name || "Pemain seterusnya"}`,
@@ -1163,6 +1212,9 @@ async function complete(rev, used) {
   }
 
   // Soalan terakhir.
+  if(winnerHighlightActive){
+    await new Promise(resolve=>setTimeout(resolve,3000));
+  }
   await showWordTransition(
     "SEMUA 5 PERKATAAN SELESAI!",
     "Mengira markah akhir dan menentukan juara...",
@@ -1209,7 +1261,13 @@ async function solve(){
 async function finishSolve(correct){
  if(!solveMode)return;
  solveMode=false;stopSolveTimer();
- if(correct){soundWin();return complete([...currentQ().answer.toUpperCase()].map((x,i)=>i+":"+x),room.used_letters||[]);}
+ if(correct){
+   const answer=currentQ().answer.toUpperCase();
+   soundWin();
+   showSolveWinner(me?.name||"Pemain",answer);
+   broadcastWinnerHighlight(me?.name||"Pemain",answer);
+   return complete([...answer].map((x,i)=>i+":"+x),room.used_letters||[]);
+ }
  const i=players.findIndex(p=>p.id===room.current_player_id),n=players[(i+1)%players.length];
  await sb.from("rooms").update({current_player_id:n.id,solve_mode:false,solve_deadline:null,used_letters:room.used_letters||[]}).eq("id",room.id);
  await refresh();
