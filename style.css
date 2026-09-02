@@ -215,3 +215,428 @@ button:disabled{
     padding:9px 12px;
   }
 }
+
+/* Phase 6 - Turn / Keyboard / Result UX */
+.solveKeyboardTitle{text-align:center;color:#ffd52f;font-size:10px;font-weight:900;margin:8px 0 6px}
+.solveKeyboard{display:flex;justify-content:center;flex-wrap:wrap;gap:5px;max-width:720px;margin:auto}
+.solveKeyboard button{width:38px;height:38px;min-height:38px;padding:0}
+.solveKeyboard button:disabled{opacity:.28}
+.turnBanner{max-width:760px;margin:8px auto;padding:10px 14px;text-align:center;border:2px solid #ffd52f;border-radius:999px;background:#15194f;color:#ffd52f;font-weight:900;font-size:13px}
+.turnBanner.other{border-color:#20d8ee;color:#20d8ee}
+.solveWinnerOverlay{position:fixed;inset:0;z-index:80;display:grid;place-items:center;background:#030519e8;backdrop-filter:blur(8px)}
+.solveWinnerCard{width:min(92vw,520px);padding:24px;text-align:center;border:3px solid #ffd52f;border-radius:24px;background:linear-gradient(#292d87,#0d103d);box-shadow:0 0 35px #ffd52f44;animation:resultPop .35s ease-out}
+.solveWinnerCard .winnerName{color:#ffd52f;font-size:clamp(28px,7vw,46px);font-weight:1000;margin:8px 0}
+.solveWinnerCard .winnerAnswer{font-size:clamp(18px,4vw,28px);font-weight:1000;letter-spacing:1px}
+
+/* Phase 6 v2 */
+.turnBanner{max-width:760px;margin:8px auto;padding:11px 15px;text-align:center;border:2px solid #ffd52f;border-radius:999px;background:#15194f;color:#ffd52f;font-weight:900;font-size:13px;animation:turnPulse .45s ease-out}
+.turnBanner.other{border-color:#20d8ee;color:#20d8ee}
+@keyframes turnPulse{from{transform:scale(.96);opacity:.5}to{transform:scale(1);opacity:1}}
+.spinObserver{max-width:760px;margin:8px auto;padding:9px 13px;text-align:center;border:1px solid #20d8ee;border-radius:999px;background:#101441;color:#c9cdf7;font-size:11px;font-weight:900}
+.solveKeyboardTitle{text-align:center;color:#ffd52f;font-size:10px;font-weight:900;margin:8px 0 6px}
+.solveKeyboard{display:flex;justify-content:center;flex-wrap:wrap;gap:5px;max-width:720px;margin:auto}
+.solveKeyboard button{width:38px;height:38px;min-height:38px;padding:0}
+.solveKeyboard button:disabled{opacity:.25}
+.solveWinnerOverlay{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:14px;background:#030519e8;backdrop-filter:blur(8px)}
+.solveWinnerCard{width:min(92vw,520px);padding:25px;text-align:center;border:3px solid #ffd52f;border-radius:24px;background:linear-gradient(#292d87,#0d103d);box-shadow:0 0 35px #ffd52f44;animation:resultPop .35s ease-out}
+.solveWinnerCard .winnerName{color:#ffd52f;font-size:clamp(28px,7vw,46px);font-weight:1000;margin:8px 0}
+.solveWinnerCard .winnerAnswer{font-size:clamp(18px,4vw,28px);font-weight:1000}
+
+/* =========================================================
+   PHASE 6 — TURN / KEYBOARD / RESULT UX
+   ========================================================= */
+
+/* ---------- 6.1 Solve keyboard ---------- */
+.solveKeyboardTitle{
+  text-align:center;
+  color:#ffd52f;
+  font-size:10px;
+  font-weight:900;
+  margin:8px 0 6px;
+}
+
+.solveKeyboard{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:5px;
+  max-width:720px;
+  margin:auto;
+}
+
+.solveKeyboard button{
+  width:38px;
+  height:38px;
+  min-height:38px;
+  padding:0;
+}
+
+.solveKeyboard button:disabled{
+  opacity:.25;
+}
+
+/* ---------- 6.2 Turn banner ---------- */
+.turnBanner{
+  max-width:760px;
+  margin:8px auto;
+  padding:11px 15px;
+  text-align:center;
+  border:2px solid #ffd52f;
+  border-radius:999px;
+  background:#15194f;
+  color:#ffd52f;
+  font-weight:900;
+  font-size:13px;
+  animation:turnBannerIn .45s ease-out;
+}
+
+.turnBanner.other{
+  border-color:#20d8ee;
+  color:#20d8ee;
+}
+
+@keyframes turnBannerIn{
+  from{
+    transform:scale(.96);
+    opacity:.5;
+  }
+  to{
+    transform:scale(1);
+    opacity:1;
+  }
+}
+
+/* ---------- 6.3 Other-player spin observer ---------- */
+.spinObserver{
+  max-width:760px;
+  margin:8px auto;
+  padding:9px 13px;
+  text-align:center;
+  border:1px solid #20d8ee;
+  border-radius:999px;
+  background:#101441;
+  color:#c9cdf7;
+  font-size:11px;
+  font-weight:900;
+}
+
+/* ---------- 6.4 Winner overlay ---------- */
+.solveWinnerOverlay{
+  position:fixed;
+  inset:0;
+  z-index:90;
+  display:grid;
+  place-items:center;
+  padding:14px;
+  background:#030519e8;
+  backdrop-filter:blur(8px);
+}
+
+.solveWinnerCard{
+  width:min(92vw,520px);
+  padding:25px;
+  text-align:center;
+  border:3px solid #ffd52f;
+  border-radius:24px;
+  background:linear-gradient(#292d87,#0d103d);
+  box-shadow:0 0 35px #ffd52f44;
+  animation:resultPop .35s ease-out;
+}
+
+.solveWinnerCard .winnerName{
+  color:#ffd52f;
+  font-size:clamp(28px,7vw,46px);
+  font-weight:1000;
+  margin:8px 0;
+}
+
+.solveWinnerCard .winnerAnswer{
+  font-size:clamp(18px,4vw,28px);
+  font-weight:1000;
+}
+
+/* ---------- 6.5 Random turn selection overlay ---------- */
+.turnSelectOverlay{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:grid;
+  place-items:center;
+  padding:16px;
+  background:#030519f2;
+  backdrop-filter:blur(9px);
+}
+
+.turnSelectOverlay.hidden{
+  display:none!important;
+}
+
+/* ---------- 6.6 Random turn card ---------- */
+.turnSelectCard{
+  position:relative;
+  width:min(92vw,820px);
+  max-height:97vh;
+  overflow:auto;
+  text-align:center;
+  padding:28px 25px 22px;
+  border:3px solid #ffd52f;
+  border-radius:26px;
+  background:linear-gradient(#292d87,#0d103d);
+  box-shadow:0 0 40px #ffd52f44;
+}
+
+.turnSelectKicker{
+  color:#ffd52f;
+  font-size:13px;
+  font-weight:1000;
+  letter-spacing:.5px;
+  margin-bottom:8px;
+}
+
+.turnSelectCard h2{
+  margin:5px 0 18px;
+  color:#fff;
+  font-size:clamp(24px,4vw,38px);
+  font-weight:1000;
+}
+
+/* ---------- 6.7 Wheel wrapper + fixed pointer ---------- */
+.turnSelectWheelWrap{
+  position:relative;
+  width:min(78vw,570px);
+  aspect-ratio:1;
+  margin:0 auto 18px;
+  touch-action:none;
+  user-select:none;
+  -webkit-user-select:none;
+}
+
+.turnSelectWheelWrap:before{
+  content:"";
+  position:absolute;
+  z-index:20;
+  top:-18px;
+  left:50%;
+  transform:translateX(-50%);
+
+  width:0;
+  height:0;
+
+  border-left:22px solid transparent;
+  border-right:22px solid transparent;
+  border-top:42px solid #ffef66;
+
+  filter:
+    drop-shadow(0 3px 0 #171744)
+    drop-shadow(0 5px 3px #000);
+}
+
+/* Small dark pointer stem */
+.turnSelectWheelWrap:after{
+  content:"";
+  position:absolute;
+  z-index:21;
+  top:-17px;
+  left:50%;
+  width:6px;
+  height:26px;
+  transform:translateX(-50%);
+  background:#171744;
+  border-radius:0 0 5px 5px;
+}
+
+/* ---------- 6.8 Wheel ---------- */
+.turnSelectWheel{
+  position:relative;
+  width:100%;
+  height:100%;
+  margin:0;
+  border-radius:50%;
+  border:10px solid #f7c928;
+  overflow:hidden;
+  box-sizing:border-box;
+
+  /*
+    JS controls the rotation.
+    Keep this transition long enough to make the
+    random selection visible and easy to follow.
+  */
+  transition:transform 5s cubic-bezier(.12,.72,.15,1);
+
+  transform-origin:center center;
+
+  box-shadow:
+    0 0 0 4px #fff0a0,
+    0 8px 20px #0009,
+    inset 0 0 20px #0005;
+}
+
+/* Inner dashed circle */
+.turnSelectWheel:before{
+  content:"";
+  position:absolute;
+  z-index:2;
+  inset:7%;
+  border:2px dashed rgba(255,255,255,.65);
+  border-radius:50%;
+  pointer-events:none;
+}
+
+/* ---------- 6.9 Center hub ---------- */
+.turnSelectWheel:after{
+  content:"BIJAK\A WANG";
+  white-space:pre;
+
+  position:absolute;
+  z-index:10;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+
+  width:105px;
+  height:105px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      #fff36c,
+      #f1bd19 55%,
+      #b87800
+    );
+
+  border:6px solid #4b3500;
+
+  box-shadow:
+    0 0 0 5px #ffd52f,
+    0 5px 10px #0008;
+
+  color:#342000;
+  font-size:17px;
+  line-height:1.05;
+  font-weight:1000;
+  text-align:center;
+}
+
+/* ---------- 6.10 Player names inside wheel ---------- */
+/*
+   JS positions each .turnPlayerLabel at the centre
+   of its own wheel slice. Do NOT manually rotate these
+   here unless you specifically want a different text angle.
+*/
+.turnPlayerLabel{
+  position:absolute!important;
+  z-index:5;
+
+  width:150px!important;
+  height:auto!important;
+
+  margin:0!important;
+  padding:0 5px;
+
+  display:block!important;
+
+  color:#fff!important;
+  font-size:clamp(15px,2.5vw,24px)!important;
+  line-height:1.05!important;
+  font-weight:1000!important;
+
+  text-align:center!important;
+  white-space:nowrap!important;
+
+  text-shadow:
+    2px 2px 3px #000,
+    0 0 5px #000;
+
+  pointer-events:none;
+  transform-origin:center center;
+}
+
+/* Special/long player names */
+.turnPlayerLabel.specialLabel{
+  width:140px!important;
+  white-space:normal!important;
+  font-size:clamp(12px,2vw,18px)!important;
+  line-height:1.05!important;
+}
+
+/* ---------- 6.11 Result ---------- */
+.turnSelectResult{
+  min-height:42px;
+  margin:8px auto 0;
+
+  width:fit-content;
+  min-width:230px;
+
+  padding:9px 22px;
+
+  border:2px solid #ffd52f;
+  border-radius:999px;
+
+  background:#090b28;
+  color:#ffd52f;
+
+  font-size:clamp(22px,4vw,34px);
+  font-weight:1000;
+
+  box-shadow:0 0 15px #ffd52f22;
+}
+
+/* ---------- 6.12 Mobile ---------- */
+@media(max-width:600px){
+
+  .turnSelectCard{
+    width:94vw;
+    padding:20px 12px 16px;
+  }
+
+  .turnSelectCard h2{
+    font-size:22px;
+    margin-bottom:14px;
+  }
+
+  .turnSelectWheelWrap{
+    width:min(88vw,430px);
+  }
+
+  .turnSelectWheel{
+    border-width:7px;
+  }
+
+  .turnSelectWheel:after{
+    width:78px;
+    height:78px;
+    font-size:12px;
+    border-width:4px;
+  }
+
+  .turnPlayerLabel{
+    width:100px!important;
+    font-size:14px!important;
+  }
+
+  .turnPlayerLabel.specialLabel{
+    width:100px!important;
+    font-size:12px!important;
+  }
+
+  .turnSelectResult{
+    min-width:180px;
+    font-size:22px;
+  }
+
+  .turnBanner{
+    font-size:11px;
+    padding:9px 12px;
+  }
+
+  .solveKeyboard button{
+    width:34px;
+    height:34px;
+    min-height:34px;
+  }
+}
